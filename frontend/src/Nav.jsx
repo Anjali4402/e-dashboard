@@ -20,6 +20,9 @@ const Nav = () => {
         <li>
           <Link to='/profile' >Profile</Link>
         </li>
+         <li>
+          <Link to='/sign-up' >Sign up</Link>
+        </li>
       </ul>
 
     </div>
