@@ -1,7 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Nav = () => {
+
+  const auth = localStorage.getItem('user');
+  const navigate = useNavigate();
+
+  const handleLogout = ()=>{
+    localStorage.removeItem('user');
+    navigate('/sign-up')
+
+  }
+
   return (
     <div className='container' >
       <ul className='ul-header' >
@@ -15,14 +25,23 @@ const Nav = () => {
           <Link to='/update' >Update Product</Link>
         </li>
         <li>
-          <Link to='/logout' >Logout</Link>
-        </li>
-        <li>
           <Link to='/profile' >Profile</Link>
         </li>
-         <li>
-          <Link to='/sign-up' >Sign up</Link>
-        </li>
+
+        {
+          auth ?
+            <li>
+              <Link  to={'/sign-up'} onClick={handleLogout} >Logout</Link>
+            </li>
+            :
+
+            <li>
+              <Link to='/sign-up' >Sign up</Link>
+            </li>
+        }
+
+
+
       </ul>
 
     </div>

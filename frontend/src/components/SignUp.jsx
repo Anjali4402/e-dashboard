@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
@@ -8,6 +9,7 @@ const SignUp = () => {
     const [name , setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
 
     const submitUseSignup = async() => {
         try {
@@ -22,6 +24,9 @@ const SignUp = () => {
             console.log(response)
              
             response = await response.json();
+
+            // store data in localstorage
+            localStorage.setItem('user', JSON.stringify(response))
             console.warn(response);
             if(response){
                 navigate('/')
@@ -44,7 +49,15 @@ const SignUp = () => {
         setName('');
         setEmail("");
         setPassword("");
-    }
+    };
+
+
+    useEffect(()=>{
+        const auth = localStorage.getItem('user');
+        if(auth){
+            navigate("/")
+        }
+    })
 
   return (
     <div className='signup-box'>
