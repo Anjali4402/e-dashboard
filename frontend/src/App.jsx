@@ -5,6 +5,7 @@ import Nav from './Nav'
 import Footer from './Footer'
 import SignUp from './components/SignUp';
 import PrivateRoute from './components/PrivateRoute';
+import Login from './components/Login';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         </Route>
 
         <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/login' element={<Login/>} />
       </Routes>
 
       <Footer />
