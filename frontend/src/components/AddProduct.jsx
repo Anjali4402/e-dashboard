@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 
 const displayedData = [
@@ -52,6 +52,8 @@ const AddProduct = () => {
         company: ""
     })
 
+    const [error , setError] = useState(false)
+
     const hanldeInputProduct = (event) => {
         const { name, value } = event.target;
 
@@ -65,6 +67,12 @@ const AddProduct = () => {
     const handleSubmitData = async (event) => {
 
         event.preventDefault();
+
+        if(!productData?.name || !productData?.price || !productData?.category || !productData?.company){
+            setError(true);
+            console.error('not all feild added')
+            return false;
+        }
 
         await handleAddProductApi();
         clearData();
@@ -90,7 +98,8 @@ const AddProduct = () => {
                     displayedData.map((field) => {
 
                         return (
-                            <div key={field.id} className='formData-div' >
+                            <React.Fragment key={field.id}  >
+                            <div className='formData-div' >
                                 <label htmlFor={field.name}>{field?.label}</label>
                                 <input
                                     type={field.type}
@@ -98,10 +107,17 @@ const AddProduct = () => {
                                     name={field.name}
                                     value={productData[field.name]}
                                     onChange={(event) => { hanldeInputProduct(event) }}
-                                    required
+                                    // required
                                     placeholder={`Enter ${field.label}`}
                                 />
                             </div>
+
+                            {
+                                error && !productData[field.name] && <span className="error-msg" >Enter {field.label}</span>
+                            }
+
+
+                            </React.Fragment>
                         )
 
                     })
