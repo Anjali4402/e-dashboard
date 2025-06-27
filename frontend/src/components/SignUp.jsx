@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
 
@@ -116,6 +116,16 @@ const SignUp = () => {
                 </button>
 
             </div>
+
+            <p 
+                    style={{textAlign:'center'}}
+                     >
+                        Already have account ? <Link
+                    to='/login'
+                     > Login
+
+                     </Link></p>
+            
 
 
 
