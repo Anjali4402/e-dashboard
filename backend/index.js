@@ -51,6 +51,15 @@ app.post('/add-product', async (req, resp)=> {
 })
 
 
+// get all product 
+app.get('/products', async(req, resp) => {
+    
+    const data = await Product.find();
+
+    resp.send(data)
+})
+
+
 
 
 
