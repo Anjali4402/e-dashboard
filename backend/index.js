@@ -60,6 +60,18 @@ app.get('/products', async(req, resp) => {
 })
 
 
+// DELETE PRODUCT   
+app.delete('/delete-product/:_id', async(req, resp) => {
+
+    let productId = await req?.params;
+
+    const result = await Product.deleteOne(productId);
+
+    resp.send(result)
+
+})
+
+
 
 
 
