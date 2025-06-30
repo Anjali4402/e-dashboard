@@ -69,6 +69,25 @@ app.delete('/delete-product/:_id', async(req, resp) => {
 
     resp.send(result)
 
+});
+
+
+// EDIT PROUDCT API
+app.put('/update-product/:_id', async(req, resp) => {
+
+    const proudctId = await req.params;
+
+    const result = await Product.updateOne(
+        proudctId,
+        {
+            $set : req.body
+        }
+    );
+
+    console.log(result);
+
+
+    resp.send("edit product sucssesfullY")
 })
 
 
