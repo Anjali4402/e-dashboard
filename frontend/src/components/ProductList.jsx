@@ -2,11 +2,15 @@ import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { RiDeleteBinLine } from "react-icons/ri";
+import { MdModeEditOutline } from "react-icons/md";
+
 
 const ProductList = () => {
 
 
     const [products, setProducts] = useState([]);
+
+    const [selectedProdcut, setSelectedProduct] = useState('');
 
     const handleFetchProudct = async () => {
 
@@ -43,10 +47,39 @@ const ProductList = () => {
     }
 
 
+    // handle update product api 
+    const handleUpdateProduct = async(editedData) => {
+        try {
+            let response = await fetch (`http://localhost:5000/update-product/${selectedProdcut?._id}` , {
+                method :"PUT",
+                body : editedData,
+                headers : {
+                    'content-type' : "application/json"
+                }
+            } )
+            response = await response.json();
+            if(response?.acknowledged){
+                handleFetchProudct();
+            }
+        }catch(error){
+            console.error(error)
+        }
+    }
+
+
     useEffect(() => {
 
         handleFetchProudct();
-    }, [])
+    }, []);
+
+
+
+    const handleClickEdit = (product) => {
+
+        console.log(product)
+        setSelectedProduct(product)
+
+    }
 
 
     return (
@@ -80,6 +113,11 @@ const ProductList = () => {
                                         <RiDeleteBinLine
                                         onClick={() => {handleDeleteProduct(product?._id)} }
                                          size={20} color='red' />
+
+                                         <MdModeEditOutline
+                                         onClick={()=>{handleClickEdit(product)}}
+                                         size={20}
+                                         />
                                     </td>
                                 </tr>
                             )
