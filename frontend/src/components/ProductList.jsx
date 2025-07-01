@@ -115,6 +115,7 @@ const ProductList = () => {
                                          size={20} color='red' />
 
                                          <MdModeEditOutline
+                                         style={{marginLeft:'20px'}}
                                          onClick={()=>{handleClickEdit(product)}}
                                          size={20}
                                          />
