@@ -40,7 +40,7 @@ app.post('/login', async (req, resp) => {
 
 
 
-app.post('/add-product', async (req, resp)=> {
+app.post('/add-product', async (req, resp) => {
 
     let product = new Product(req.body);
 
@@ -52,8 +52,8 @@ app.post('/add-product', async (req, resp)=> {
 
 
 // get all product 
-app.get('/products', async(req, resp) => {
-    
+app.get('/products', async (req, resp) => {
+
     const data = await Product.find();
 
     resp.send(data)
@@ -61,7 +61,7 @@ app.get('/products', async(req, resp) => {
 
 
 // DELETE PRODUCT   
-app.delete('/delete-product/:_id', async(req, resp) => {
+app.delete('/delete-product/:_id', async (req, resp) => {
 
     let productId = await req?.params;
 
@@ -72,15 +72,26 @@ app.delete('/delete-product/:_id', async(req, resp) => {
 });
 
 
+// GET PRODUCT DETAILS API
+app.get('/product-details/:_id', async (req, resp) => {
+
+    const productId = await req.params;
+
+    const productDetails = await Product.findOne(productId);
+
+    resp.send(productDetails)
+})
+
+
 // EDIT PROUDCT API
-app.put('/update-product/:_id', async(req, resp) => {
+app.put('/update-product/:_id', async (req, resp) => {
 
     const proudctId = await req.params;
 
     const result = await Product.updateOne(
         proudctId,
         {
-            $set : req.body
+            $set: req.body
         }
     );
 
