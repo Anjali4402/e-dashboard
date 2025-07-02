@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdModeEditOutline } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 
 const ProductList = () => {
 
+    const navigate = useNavigate();
 
     const [products, setProducts] = useState([]);
 
@@ -76,8 +78,10 @@ const ProductList = () => {
 
     const handleClickEdit = (product) => {
 
-        console.log(product)
-        setSelectedProduct(product)
+        // console.log(product)
+        setSelectedProduct(product);
+
+        navigate(`edit/${product._id}`)
 
     }
 

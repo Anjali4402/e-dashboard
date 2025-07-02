@@ -22,6 +22,9 @@ function App() {
         <Route path='/update' element={<h1>Update the Proudct</h1>} />
         <Route path='/logout' element={<h1>Logout the user</h1>} />
         <Route path='/profile' element={<h1>This is my Profile Page</h1>} />
+
+        {/* edit product router */}
+        <Route path='/edit/:_id' element={<AddProduct />} />
         </Route>
 
         <Route path='/sign-up' element={<SignUp />} />

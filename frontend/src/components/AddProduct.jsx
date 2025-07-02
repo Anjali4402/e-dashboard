@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 
 const displayedData = [
@@ -9,6 +10,10 @@ const displayedData = [
 ]
 
 const AddProduct = () => {
+
+
+    const params = useParams();
+    console.log(params._id)
 
 
     // get userId form localstorage 
