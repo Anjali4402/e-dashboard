@@ -79,7 +79,14 @@ const AddProduct = () => {
                 }
             });
             response = await response.json();
-            console.log(response)
+
+            console.log(response);
+            setProductData({
+                name : response?.name,
+                price : response?.price,
+                category : response?.category,
+                company : response?.company
+            })
         }catch(error){
             console.log(error)
         }
