@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 
 
 const displayedData = [
@@ -12,8 +12,27 @@ const displayedData = [
 const AddProduct = () => {
 
 
+    const [isEditMode, setIsEditMode] = useState(false)
+
     const params = useParams();
     console.log(params._id)
+
+    const location = useLocation();
+    const {pathname} = location;
+    console.log(pathname.startsWith('/add'))
+
+    useEffect(()=>{
+        if(pathname.startsWith("/edit")){
+            setIsEditMode(true)
+        }
+    },[pathname]);
+
+
+    useEffect(()=>{
+        if(params._id){
+            handleGetProductById(params._id)
+        }
+    },[params._id])
 
 
     // get userId form localstorage 
@@ -48,6 +67,22 @@ const AddProduct = () => {
             console.log(error)
         }
 
+    };
+
+
+    const handleGetProductById = async (_id) => {
+        try{
+            let response = await fetch(`http://localhost:5000/product-details/${_id}`, {
+                method: 'GET',
+                headers : {
+                    'Content-Type': 'application/json',
+                }
+            });
+            response = await response.json();
+            console.log(response)
+        }catch(error){
+            console.log(error)
+        }
     }
 
     const [productData, setProductData] = useState({
@@ -95,7 +130,10 @@ const AddProduct = () => {
 
     return (
         <div className='signup-box' >
-            <h1>Add New Product</h1>
+            <h1>
+                {
+                    isEditMode ? 'Edit Product' : 'Add New Product'
+                }</h1>
 
             <form onSubmit={handleSubmitData}>
 
