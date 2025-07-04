@@ -95,10 +95,7 @@ app.put('/update-product/:_id', async (req, resp) => {
         }
     );
 
-    console.log(result);
-
-
-    resp.send("edit product sucssesfullY")
+    resp.send(result)
 })
 
 

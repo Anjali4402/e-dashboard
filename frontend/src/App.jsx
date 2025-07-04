@@ -19,7 +19,7 @@ function App() {
         <Route element={<PrivateRoute/>} >
         <Route path='/' element={<ProductList />} />
         <Route path='/add' element={<AddProduct />} />
-        <Route path='/update' element={<h1>Update the Proudct</h1>} />
+        {/* <Route path='/update' element={<h1>Update the Proudct</h1>} /> */}
         <Route path='/logout' element={<h1>Logout the user</h1>} />
         <Route path='/profile' element={<h1>This is my Profile Page</h1>} />
 

@@ -19,11 +19,11 @@ const Nav = () => {
           <Link to='/' className='nav-li' >Product</Link>
         </li>
         <li>
-          <Link to='/add' >Add Proudct</Link>
+          <Link to='/add' >Add/Update Proudct</Link>
         </li>
-        <li>
+        {/* <li>
           <Link to='/update' >Update Product</Link>
-        </li>
+        </li> */}
         <li>
           <Link to='/profile' >Profile</Link>
         </li>
