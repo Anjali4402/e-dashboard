@@ -119,6 +119,11 @@ ul li{
 }
 
 
+.footer h2{
+  text-align: center;
+}
+
+
 /* table ui */
 
 table {
@@ -137,4 +142,23 @@ td, th {
 
 tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+
+/* Search Box */
+.search-div {
+  width: 90%;
+  margin : 15px auto;
+}
+
+
+.search-div .search-box{
+  width: 80%;
+  max-width: 400px;
+  border: 2px solid black;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: blue;
 }
