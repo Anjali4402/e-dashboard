@@ -76,10 +76,13 @@ app.delete('/delete-product/:_id', async (req, resp) => {
 app.get('/product-details/:_id', async (req, resp) => {
 
     const productId = await req.params;
+     const productDetails = await Product.findOne(productId);
 
-    const productDetails = await Product.findOne(productId);
-
-    resp.send(productDetails)
+    if(productDetails){
+        resp.send(productDetails)
+    }else{
+        resp.send({result : "No Record Found!"})
+    }
 })
 
 
@@ -96,6 +99,26 @@ app.put('/update-product/:_id', async (req, resp) => {
     );
 
     resp.send(result)
+})
+
+
+
+// SEARCH API
+app.get('/search/:text', async(req, resp)=>{
+    
+    const result = await Product.find(
+        {
+            "$or" : [
+                {name : {$regex : req?.params?.text }},
+                {category : {$regex : req?.params?.text} },
+                {company : {$regex : req?.params?.text}}
+            ]
+        }
+    ) 
+
+
+    resp.send(result)
+
 })
 
 
