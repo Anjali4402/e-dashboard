@@ -23,16 +23,19 @@ app.post('/register', async (req, resp) => {
     delete result.password
 
 
-    Jwt.sign({ result }, jwtkey, { expiresIn: '2h' }, (err, token) => {
-        if (err) {
-            resp.send({ result: 'Something went wrong! Plese try again.' })
-        }
+    if (user) {
 
-        resp.send({ result, auth: token })
+        Jwt.sign({ result }, jwtkey, { expiresIn: '2h' }, (err, token) => {
+            if (err) {
+                resp.send({ result: 'Something went wrong! Plese try again.' })
+            }
 
-    })
+            resp.send({ result, auth: token })
 
-    resp.send(result);
+        })
+    } else {
+        resp.send({ result: "somthing went wrong" })
+    }
 });
 
 app.post('/login', async (req, resp) => {
@@ -84,7 +87,7 @@ app.get('/products', verifyToken, async (req, resp) => {
 
 
 // DELETE PRODUCT   
-app.delete('/delete-product/:_id', verifyToken , async (req, resp) => {
+app.delete('/delete-product/:_id', verifyToken, async (req, resp) => {
 
     let productId = await req?.params;
 
@@ -96,7 +99,7 @@ app.delete('/delete-product/:_id', verifyToken , async (req, resp) => {
 
 
 // GET PRODUCT DETAILS API
-app.get('/product-details/:_id', verifyToken , async (req, resp) => {
+app.get('/product-details/:_id', verifyToken, async (req, resp) => {
 
     const productId = await req.params;
     const productDetails = await Product.findOne(productId);
