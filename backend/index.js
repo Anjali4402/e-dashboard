@@ -4,6 +4,10 @@ require('./db/config');
 const User = require('./db/User');
 const Product = require('./db/Product');
 const app = express();
+const Jwt = require('jsonwebtoken');
+
+const jwtkey = 'e-com';
+
 
 app.use(cors());
 app.use(express.json());
@@ -18,6 +22,16 @@ app.post('/register', async (req, resp) => {
     // it will not show the password in the result ( not show in the response) good practice.
     delete result.password
 
+
+    Jwt.sign({ result }, jwtkey, { expiresIn: '2h' }, (err, token) => {
+        if (err) {
+            resp.send({ result: 'Something went wrong! Plese try again.' })
+        }
+
+        resp.send({ result, auth: token })
+
+    })
+
     resp.send(result);
 });
 
@@ -29,12 +43,21 @@ app.post('/login', async (req, resp) => {
         let user = await User.findOne(req.body).select("-password");
 
         if (user) {
-            resp.send(user)
+
+            Jwt.sign({ user }, jwtkey, { expiresIn: '2h' }, (err, token) => {
+                if (err) {
+                    resp.send({ result: 'Something went wrong! Plese try again.' })
+                }
+
+                resp.send({ user, auth: token })
+
+            })
+
         } else {
-            resp.send('No User Found')
+            resp.send({ result: 'No User Found' })
         }
     } else {
-        resp.send("No result found")
+        resp.send({ result: "No result found" })
     }
 });
 
@@ -76,12 +99,12 @@ app.delete('/delete-product/:_id', async (req, resp) => {
 app.get('/product-details/:_id', async (req, resp) => {
 
     const productId = await req.params;
-     const productDetails = await Product.findOne(productId);
+    const productDetails = await Product.findOne(productId);
 
-    if(productDetails){
+    if (productDetails) {
         resp.send(productDetails)
-    }else{
-        resp.send({result : "No Record Found!"})
+    } else {
+        resp.send({ result: "No Record Found!" })
     }
 })
 
@@ -104,17 +127,17 @@ app.put('/update-product/:_id', async (req, resp) => {
 
 
 // SEARCH API
-app.get('/search/:text', async(req, resp)=>{
-    
+app.get('/search/:text', async (req, resp) => {
+
     const result = await Product.find(
         {
-            "$or" : [
-                {name : {$regex : req?.params?.text }},
-                {category : {$regex : req?.params?.text} },
-                {company : {$regex : req?.params?.text}}
+            "$or": [
+                { name: { $regex: req?.params?.text } },
+                { category: { $regex: req?.params?.text } },
+                { company: { $regex: req?.params?.text } }
             ]
         }
-    ) 
+    )
 
 
     resp.send(result)
