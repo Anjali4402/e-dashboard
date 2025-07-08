@@ -2,6 +2,17 @@ import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+
+interface LoginResponse {
+    user : {
+      _id : string;
+      name : string;
+      email : string;
+    },
+    auth : string;
+  }
+
+
 const Login = () => {
 
   const navigate = useNavigate();
@@ -22,7 +33,7 @@ const Login = () => {
 
   const handleLoginApi = async () => {
     try {
-      let response = await fetch('http://localhost:5000/login', {
+      const res = await fetch('http://localhost:5000/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
         headers: {
@@ -31,10 +42,12 @@ const Login = () => {
       });
 
       // console.warn(res)
-      response = await response.json();
+      const response: LoginResponse = await res.json(); 
+
 
       // store data in localstorage
-      localStorage.setItem('user', JSON.stringify(response))
+      localStorage.setItem('user', JSON.stringify(response?.user))
+      localStorage.setItem('token', JSON.stringify(response?.auth))
       console.warn(response);
       if (response) {
         navigate('/')

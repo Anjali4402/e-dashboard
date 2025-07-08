@@ -61,6 +61,7 @@ const AddProduct = () => {
                 }),
                 headers: {
                     'Content-Type': 'application/json',
+                    'authorization': `Bearer ${JSON.parse(localStorage.getItem("token"))}`
                 }
             }));
 
@@ -91,6 +92,7 @@ const AddProduct = () => {
                 }),
                 headers: {
                     'Content-Type': 'application/json',
+                    'authorization': `Bearer ${JSON.parse(localStorage.getItem("token"))}`
                 }
             });
 
@@ -108,6 +110,7 @@ const AddProduct = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'authorization': `Bearer ${JSON.parse(localStorage.getItem("token"))}`
                 }
             });
             response = await response.json();

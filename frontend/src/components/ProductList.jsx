@@ -18,7 +18,11 @@ const ProductList = () => {
     const handleFetchProudct = async () => {
 
         try {
-            let response = await fetch("http://localhost:5000/products");
+            let response = await fetch("http://localhost:5000/products", {
+                headers: {
+                    'authorization': `Bearer ${JSON.parse(localStorage.getItem("token"))}`
+                }
+            });
 
             response = await response.json();
 
@@ -29,34 +33,36 @@ const ProductList = () => {
         }
 
     };
-    
+
 
     // hanlde delete product api
     const handleDeleteProduct = async (_id) => {
-        try{
-            let response = await fetch(`http://localhost:5000/delete-product/${_id}` , {
-                method : "DELETE",
-                headers : {
-                    'content-type' : "application/json"
+        try {
+            let response = await fetch(`http://localhost:5000/delete-product/${_id}`, {
+                method: "DELETE",
+                headers: {
+                    'content-type': "application/json",
+                    'authorization' : `Bearer ${JSON.parse(localStorage.getItem("token"))}`
                 }
             })
             response = await response.json();
-            if(response?.acknowledged){
+            if (response?.acknowledged) {
                 handleFetchProudct();
             }
-        }catch(error){
+        } catch (error) {
             console.error(error)
         }
     }
 
 
     // handle Search Product api
-    const handleSearchProductApi = async(key)=> {
-        try{
+    const handleSearchProductApi = async (key) => {
+        try {
             let response = await fetch(`http://localhost:5000/search/${key}`, {
-                method:'GET',
-                headers : {
-                    'content-type' : "application/json"
+                method: 'GET',
+                headers: {
+                    'content-type': "application/json",
+                    'authorization' : `Bearer ${JSON.parse(localStorage.getItem("token"))}`
                 }
             });
 
@@ -64,12 +70,12 @@ const ProductList = () => {
             // set response data into the proudct list
             setProducts(response)
 
-        }catch(error){
+        } catch (error) {
             console.error(error)
         }
     }
 
-  
+
 
     // initally page render call fetch all product api.
     useEffect(() => {
@@ -84,13 +90,13 @@ const ProductList = () => {
     };
 
     // handle Seach product 
-    const handleSearchProduct = async(result) => {
-       if(result.length >= 1){
-        await handleSearchProductApi(result)
-       }
-       else{
-        handleFetchProudct()
-       }
+    const handleSearchProduct = async (result) => {
+        if (result.length >= 1) {
+            await handleSearchProductApi(result)
+        }
+        else {
+            handleFetchProudct()
+        }
     }
 
 
@@ -101,7 +107,7 @@ const ProductList = () => {
 
 
             <Search handleSearch={handleSearchProduct} />
-            
+
 
             <table>
                 <thead>
@@ -126,14 +132,14 @@ const ProductList = () => {
                                     <td>{product.company}</td>
                                     <td>
                                         <RiDeleteBinLine
-                                        onClick={() => {handleDeleteProduct(product?._id)} }
-                                         size={20} color='red' />
+                                            onClick={() => { handleDeleteProduct(product?._id) }}
+                                            size={20} color='red' />
 
-                                         <MdModeEditOutline
-                                         style={{marginLeft:'20px'}}
-                                         onClick={()=>{handleClickEdit(product)}}
-                                         size={20}
-                                         />
+                                        <MdModeEditOutline
+                                            style={{ marginLeft: '20px' }}
+                                            onClick={() => { handleClickEdit(product) }}
+                                            size={20}
+                                        />
                                     </td>
                                 </tr>
                             )
@@ -143,7 +149,7 @@ const ProductList = () => {
 
                 </tbody>
 
-               
+
 
             </table>
 

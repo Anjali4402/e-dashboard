@@ -63,7 +63,7 @@ app.post('/login', async (req, resp) => {
 
 
 
-app.post('/add-product', async (req, resp) => {
+app.post('/add-product', verifyToken, async (req, resp) => {
 
     let product = new Product(req.body);
 
@@ -75,7 +75,7 @@ app.post('/add-product', async (req, resp) => {
 
 
 // get all product 
-app.get('/products', async (req, resp) => {
+app.get('/products', verifyToken, async (req, resp) => {
 
     const data = await Product.find();
 
@@ -84,7 +84,7 @@ app.get('/products', async (req, resp) => {
 
 
 // DELETE PRODUCT   
-app.delete('/delete-product/:_id', async (req, resp) => {
+app.delete('/delete-product/:_id', verifyToken , async (req, resp) => {
 
     let productId = await req?.params;
 
@@ -96,7 +96,7 @@ app.delete('/delete-product/:_id', async (req, resp) => {
 
 
 // GET PRODUCT DETAILS API
-app.get('/product-details/:_id', async (req, resp) => {
+app.get('/product-details/:_id', verifyToken , async (req, resp) => {
 
     const productId = await req.params;
     const productDetails = await Product.findOne(productId);
@@ -110,7 +110,7 @@ app.get('/product-details/:_id', async (req, resp) => {
 
 
 // EDIT PROUDCT API
-app.put('/update-product/:_id', async (req, resp) => {
+app.put('/update-product/:_id', verifyToken, async (req, resp) => {
 
     const proudctId = await req.params;
 
@@ -127,7 +127,7 @@ app.put('/update-product/:_id', async (req, resp) => {
 
 
 // SEARCH API
-app.get('/search/:text', async (req, resp) => {
+app.get('/search/:text', verifyToken, async (req, resp) => {
 
     const result = await Product.find(
         {
@@ -143,6 +143,35 @@ app.get('/search/:text', async (req, resp) => {
     resp.send(result)
 
 })
+
+
+
+
+
+// middleware for tokan verfication.
+function verifyToken(req, resp, next) {
+
+    let token = req.headers['authorization']
+
+    // if we have token
+    if (token) {
+        token = token.split(' ')[1];
+
+        // Now Match/ Verify the token key
+        Jwt.verify(token, jwtkey, (err, valid) => {
+            if (err) {
+                resp.send({ result: "Please provide valid token" })
+            } else {
+                next();
+            }
+        })
+
+    } else {
+        // if we don't have token
+        resp.send({ result: "Please add token with header" })
+
+    }
+}
 
 
 
